@@ -192,3 +192,10 @@ body.dark-mode .carousel-dots button.active { background: #d4af37; }
     padding: 8px 2px;
   }
 }
+@media (max-width: 600px) {
+  .carousel-track .testimonial-card {
+    flex: 0 0 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
