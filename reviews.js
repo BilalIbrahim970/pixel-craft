@@ -1,5 +1,5 @@
 /* ==========================================
-   REVIEWS CAROUSEL — GUARANTEED WORKING
+   REVIEWS CAROUSEL — MOBILE RESPONSIVE
    ========================================== */
 
 console.log("=== REVIEWS.JS LOADED ===");
@@ -20,6 +20,18 @@ var REVIEWS_DATA = [
     message: "Very creative team. Delivered exactly what I imagined." }
 ];
 
+// ⭐ YEH FUNCTION DECIDE KARTA HAI KITNE CARDS DIKHEN
+function getPerView() {
+  if (window.innerWidth <= 600) return 1;   // Mobile: 1 card
+  if (window.innerWidth <= 900) return 2;   // Tablet: 2 cards
+  return 3;                                  // Desktop: 3 cards
+}
+
+var currentIndex = 0;
+var maxIndex = 0;
+var perView = 3;
+var autoTimer = null;
+
 // Function to render
 function renderReviews() {
   console.log("=== RENDER CALLED ===");
@@ -38,10 +50,8 @@ function renderReviews() {
     saved = JSON.parse(localStorage.getItem('pixelcraft_reviews') || '[]');
   } catch (e) { saved = []; }
 
-  // Sort newest first
   saved.sort(function(a, b) { return (b.id || 0) - (a.id || 0); });
 
-  // Combine
   var all = saved.concat(REVIEWS_DATA);
   console.log("📝 Total reviews:", all.length);
 
@@ -71,25 +81,29 @@ function renderReviews() {
   track.innerHTML = html;
   console.log("✅ INSERTED into track. Length:", track.innerHTML.length);
 
+  // ⭐ PER-VIEW UPDATE KARO
+  perView = getPerView();
+  console.log("📱 perView:", perView);
+
   // Force layout
   track.style.display = 'flex';
   track.style.gap = '20px';
   track.style.transition = 'transform 0.5s ease';
 
-  // Set card widths
+  // Set card widths (perView ke hisaab se)
   var cards = track.querySelectorAll('.testimonial-card');
   console.log("✅ Cards created:", cards.length);
 
   for (var c = 0; c < cards.length; c++) {
-    cards[c].style.flex = '0 0 calc((100% - 40px) / 3)';
-    cards[c].style.minWidth = 'calc((100% - 40px) / 3)';
+    cards[c].style.flex = '0 0 calc((100% - ' + ((perView - 1) * 20) + 'px) / ' + perView + ')';
+    cards[c].style.minWidth = 'calc((100% - ' + ((perView - 1) * 20) + 'px) / ' + perView + ')';
     cards[c].style.boxSizing = 'border-box';
   }
 
   // Build dots
   var dotsWrap = document.getElementById('carouselDots');
   if (dotsWrap) {
-    var totalPages = Math.ceil(all.length / 3);
+    var totalPages = Math.ceil(all.length / perView);
     var dotsHTML = '';
     for (var p = 0; p < totalPages; p++) {
       dotsHTML += '<button data-page="' + p + '" class="' + (p === 0 ? 'active' : '') + '"></button>';
@@ -101,12 +115,8 @@ function renderReviews() {
   setupCarousel(all.length);
 }
 
-// Carousel navigation
-var currentIndex = 0;
-var maxIndex = 0;
-
 function setupCarousel(total) {
-  maxIndex = Math.max(0, total - 3);
+  maxIndex = Math.max(0, total - perView);
   currentIndex = 0;
 
   var track = document.getElementById('carouselTrack');
@@ -122,7 +132,7 @@ function setupCarousel(total) {
 
     if (dotsWrap) {
       var dots = dotsWrap.querySelectorAll('button');
-      var activePage = Math.floor(currentIndex / 3);
+      var activePage = Math.floor(currentIndex / perView);
       for (var i = 0; i < dots.length; i++) {
         if (i === activePage) dots[i].classList.add('active');
         else dots[i].classList.remove('active');
@@ -149,7 +159,7 @@ function setupCarousel(total) {
     for (var d = 0; d < dots.length; d++) {
       dots[d].onclick = (function(page) {
         return function() {
-          currentIndex = page * 3;
+          currentIndex = page * perView;
           update();
         };
       })(d);
@@ -157,12 +167,22 @@ function setupCarousel(total) {
   }
 
   // Auto slide
-  setInterval(function() {
+  if (autoTimer) clearInterval(autoTimer);
+  autoTimer = setInterval(function() {
     currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
     update();
   }, 4000);
 
-  window.addEventListener('resize', update);
+  // ⭐ RESIZE PE PER-VIEW UPDATE
+  window.addEventListener('resize', function() {
+    var newPerView = getPerView();
+    if (newPerView !== perView) {
+      perView = newPerView;
+      renderReviews();
+    } else {
+      update();
+    }
+  });
 }
 
 // Run on load
@@ -172,7 +192,7 @@ if (document.readyState === 'loading') {
   renderReviews();
 }
 
-// Also run on window load (backup)
+// Backup on window load
 window.addEventListener('load', function() {
   console.log("=== WINDOW LOADED ===");
   var track = document.getElementById('carouselTrack');
