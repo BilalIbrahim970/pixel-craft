@@ -1,0 +1,160 @@
+/* ==========================================
+   REVIEWS CAROUSEL STYLES
+   ========================================== */
+
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  flex: 1;
+  padding: 10px 5px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  gap: 20px;
+}
+
+.carousel-track .testimonial-card {
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: calc((100% - 40px) / 3);
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.carousel-btn {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid #d4af37;
+  background: #fff;
+  color: #14532d;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+}
+
+.carousel-btn:hover {
+  background: #166534;
+  color: #fff;
+  border-color: #166534;
+  transform: scale(1.08);
+}
+
+.carousel-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.carousel-btn:disabled:hover {
+  background: #fff;
+  color: #14532d;
+  border-color: #d4af37;
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.carousel-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #ccc;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s;
+}
+
+.carousel-dots button.active {
+  background: #166534;
+  width: 26px;
+  border-radius: 6px;
+}
+
+/* Empty state */
+.carousel-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+  font-style: italic;
+  width: 100%;
+}
+
+/* Review CTA Box */
+.review-cta {
+  margin-top: 45px;
+  text-align: center;
+  padding: 35px 25px;
+  background: linear-gradient(135deg, rgba(22, 101, 52, 0.08), rgba(212, 175, 55, 0.08));
+  border: 2px dashed rgba(212, 175, 55, 0.5);
+  border-radius: 14px;
+}
+
+.review-cta h3 {
+  color: #14532d;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.review-cta p {
+  color: #555;
+  margin-bottom: 20px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Dark mode */
+body.dark-mode .review-cta h3 { color: #d4af37; }
+body.dark-mode .review-cta p { color: #bbb; }
+body.dark-mode .carousel-btn {
+  background: #1a1a1a;
+  color: #d4af37;
+  border-color: #d4af37;
+}
+body.dark-mode .carousel-btn:hover {
+  background: #d4af37;
+  color: #1a1a1a;
+}
+body.dark-mode .carousel-dots button { background: #444; }
+body.dark-mode .carousel-dots button.active { background: #d4af37; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .carousel-track .testimonial-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+  }
+}
+
+@media (max-width: 600px) {
+  .carousel-track .testimonial-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+  .carousel-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .carousel-wrapper {
+    gap: 8px;
+  }
+}
