@@ -158,3 +158,37 @@ body.dark-mode .carousel-dots button.active { background: #d4af37; }
     gap: 8px;
   }
 }
+/* ==========================================
+   RESPONSIVE — Mobile / Tablet
+   ========================================== */
+
+/* Tablet: 2 cards */
+@media (max-width: 900px) {
+  .carousel-track .testimonial-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+  }
+}
+
+/* Mobile: 1 card */
+@media (max-width: 600px) {
+  .carousel-track .testimonial-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .carousel-wrapper {
+    gap: 6px;
+  }
+
+  .carousel-viewport {
+    padding: 8px 2px;
+  }
+}
